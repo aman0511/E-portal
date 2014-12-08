@@ -1,0 +1,85 @@
+{% extends temp %} {% load staticfiles %}
+
+{% block jsadd-up %}
+<script src="{% static 'assets/js/chart-master/Chart.js' %}"></script>
+{% endblock jsadd-up %}
+
+{% load attendence_filter %}
+
+{% block content %}
+                <div class="row">
+
+                    <!-- RIGHT SIDEBAR CONTENT
+      *********************************************************************************************************************************************************** -->
+                    <!--<h3 class="goright">Questions added:&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;</h3-->
+                    <div class="col-lg-3">
+                        <!--COMPLETED ACTIONS DONUTS CHART-->
+                        <div class="form-panel">
+                            <h4 class="mb"><i class="fa fa-angle-right"></i> Filters</h4>
+                            <form class="form-horizontal style-form" method="POST">
+                              {% csrf_token %}
+                                <div class="form-group">
+                                    <div class="col-sm-12">
+                                        <legend class="center-block"><b>Select Course</b>
+                                        </legend>
+                                        <select class="form-control" name="selected_course">
+                                            {% for course in courses %}
+                                            <option value="{{course.course_id}}">{{course.course_name}}</option>
+                                            {% endfor %}
+                                        </select>
+                                        <br>
+                                        <input type="submit" name="search" class="btn btn-primary btn-lg btn-block">
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+
+                        <!--COMPLETED ACTIONS DONUTS CHART-->
+                    </div>
+
+                    <div class="col-lg-9 main-chart">
+                            <!-- SERVER STATUS PANELS -->
+                            <div class="content-panel">
+                            {% if students %}
+                            <form method='post'>
+                            {% csrf_token %}
+                            <p style="text-align:center" class="alert alert-warning h4"><b>{{selected_course|upper}}</b></p>
+                              <h4 class="goright"><i class="fa fa-calender"></i> Date: &nbsp;&nbsp;23/11/2014&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h4><hr><table class="table table-hover">
+                              
+                              
+                                  <thead>
+                                  <tr>
+                                      <th>Entry No</th>
+                                      <th>Total</th>
+                                      <th>Attended</th>
+                                  </tr>
+                                  </thead>
+                                  <tbody>
+                                  
+                                  {% for student in students %}
+                                  <tr>
+                                      <td>{{student.user.username}}</td>
+                                      <td>{{total}}</td>
+                                      {% get_attendance %}
+                                  </tr>
+                                  {% endfor %}
+                                  
+                                  </tbody>
+                              </table>
+                              {% endif %}
+                            </form>
+                          </div>
+                            
+
+                        </div>
+                       
+                    </div>
+                    <script>
+                        $('#master').click(function(){
+                              $('.slave').prop("checked", $('#master').prop("checked"));
+                        });
+                    </script>
+           
+ {% endblock %}
+{% block jsadd %}
+{% endblock jsadd %}

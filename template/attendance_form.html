@@ -1,0 +1,95 @@
+{% extends 'base/sidebarf.html' %} {% load staticfiles %}
+
+{% block jsadd-up %}
+<script src="{% static 'assets/js/chart-master/Chart.js' %}"></script>
+{% endblock jsadd-up %}
+
+
+{% block content %}
+                <div class="row">
+
+                    <!-- RIGHT SIDEBAR CONTENT
+      *********************************************************************************************************************************************************** -->
+                    <!--<h3 class="goright">Questions added:&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;</h3-->
+                    <div class="col-lg-3">
+                        <!--COMPLETED ACTIONS DONUTS CHART-->
+                        <div class="form-panel">
+                            <h4 class="mb"><i class="fa fa-angle-right"></i> Filters</h4>
+                            <form class="form-horizontal style-form" method="POST">
+                              {% csrf_token %}
+                                <div class="form-group">
+                                    <div class="col-sm-12">
+                                        <legend class="center-block"><b>Select Course</b>
+                                        </legend>
+                                        <select class="form-control" name="selected_course">
+                                            {% for course in courses %}
+                                            <option value="{{course.course_id}}">{{course.course_name}}</option>
+                                            {% endfor %}
+                                        </select>
+                                        <br>
+                                        <input type="submit" name="search" class="btn btn-primary btn-lg btn-block">
+                                    </div>
+                                </div>
+                            </form>
+                            {% if students %}
+                            <div class="checkbox goright"><label class="text-info"><input name='all' type="checkbox" id="master" value="all">Mark All</label></div>
+                            {% endif %}
+                        </div>
+
+                        <!--COMPLETED ACTIONS DONUTS CHART-->
+                    </div>
+
+                    <div class="col-lg-9 main-chart">
+                            <!-- SERVER STATUS PANELS -->
+                            <div class="content-panel">
+                            {% if error %}
+                              <p class='alert alert-danger' style="text-align:center">{{error}}</p>
+                            {% endif %}
+                            {% if success %}
+                              <p class='alert alert-success' style="text-align:center">{{success}}</p>
+                            {% endif %}
+                            {% if students %}
+                            <form method='post'>
+                            {% csrf_token %}
+                              <p style="text-align:center" class="alert alert-warning h4"><b>{{selected_course|upper}}</b></p>
+                              <h4 class="goright"><i class="fa fa-calender"></i> Date: &nbsp;&nbsp;23/11/2014&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h4><hr><table class="table table-hover">
+                              
+                              
+                                  <thead>
+                                  <tr>
+                                      <th>#</th>
+                                      <th>Entry No</th>
+                                      <th>First Name</th>
+                                      <th>Last Name</th>
+                                  </tr>
+                                  </thead>
+                                  <tbody>
+                                  {% for student in students %}
+                                  <tr>
+                                      <td><input class='slave' name='present' type="checkbox" id="{{student.user.username}}" value="{{student.user.username}}"></td>
+                                      <td>{{student.user.username|slice:":-12"}}</td>
+                                      <td>{{student.user.first_name}}</td>
+                                      <td>{{student.user.last_name}}</td>
+                                  </tr>
+                                  {% endfor %}
+                                  
+                                  </tbody>
+                              </table>
+                              <input class="btn btn-primary btn-block btn-lg" type="submit" name="submit" value="SUBMIT">
+                              {% endif %}
+                            </form>
+                          </div>
+                            
+
+                        </div>
+                       
+                    </div>
+                    <script>
+                        $('#master').click(function(){
+                              $('.slave').prop("checked", $('#master').prop("checked"));
+                        });
+                    </script>
+           
+ {% endblock %}
+{% block jsadd %}
+{% endblock jsadd %}

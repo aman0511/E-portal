@@ -1,0 +1,157 @@
+{% extends temp %} {% load staticfiles %} {% block title %}
+<title>SMVDU E-portal | {{ user.username | upper }}</title>
+{% endblock title %} {% block content %}
+
+<div class="row">
+    <div class="col-lg-8 col-lg-offset-2">
+
+
+
+        <div class="row">
+            <!-- SERVER STATUS PANELS -->
+            <div class="form-panel">
+                {% if msg %}
+                <div class="alert alert-success alert-dismissable">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">
+                        &times;
+                    </button>
+                    {{msg}}
+                </div>
+                {% endif %}
+
+                <legend class="center-block"><b>PROFILE | {{ user.username }} </b>
+                </legend>
+                <form class="form-horizontal style-form" method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class="form-group">
+                                <label class="col-sm-3 col-sm-3 control-label">Username</label>
+                                <div class="col-sm-9 col-md-9">
+                                    <div class="input-group">
+                                        <input type="text" name="username" value="{{ user.username }}" class="form-control" placeholder="Email" readonly>
+                                        <span style="background:grey;border:grey;" class="input-group-addon">@smvdu.ac.in</span>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 col-sm-3 control-label">First Name</label>
+                                <div class="col-sm-9">
+                                    <input type="text" name="first_name" value="{{ user.first_name|upper }}" class="form-control" placeholder="First Name">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 col-sm-3 control-label">Last Name</label>
+                                <div class="col-sm-9">
+                                    <input type="text" name="last_name" value="{{ user.last_name|upper }}" class="form-control" placeholder="Last Name">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 col-sm-3 control-label">Branch</label>
+                                <div class="col-sm-6">
+                                    <select class="form-control" id="branch" name="branch">
+                                        <option value="CSE">CSE</option>
+                                        <option value="ECE">ECE</option>
+                                        <option value="IBT">IBT</option>
+                                        <option value="MEC">MEC</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 col-sm-3 control-label">SEMESTER</label>
+                                <div class="col-sm-6">
+                                    <select id="sem" class="form-control" name="sem">
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                        <option value="5">5</option>
+                                        <option value="6">6</option>
+                                        <option value="7">7</option>
+                                        <option value="8">8</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 col-sm-3 control-label">DOB</label>
+                                <div class="col-sm-6">
+                                    <input type="date" id="S_date" class="form-control" name="dateofbirth" required>
+                                </div>
+
+                            </div>
+
+                        </div>
+                        <div class="col-md-4">
+
+
+                            <div class="row ">
+
+                                <label class="col-sm-9 col-sm-9 control-label" style="margin-bottom:1%;margin-left:6%">Profile picture:</label>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-10 col-md-offset-1">
+                                    {% if user.student_profile.image %}
+                                    <img class="img-responsive img-thumbnail" src="/static/uploaded_image/spp/{{ user.student_profile.image }}"> {% else %}
+                                    <img class="img-responsive img-thumbnail" src="/static/uploaded_image/fpp/user_blue.png" /> {% endif %}
+
+                                </div>
+                            </div>
+                            <br>
+                            <div>
+                                <label class="col-sm-9 col-sm-9 control-label">Change your picture:</label>
+                                <br>
+                                <br>
+                                <input type="file" name="dp" style="margin-left:4%;padding-bottom:2%;">
+                                <br>
+                            </div>
+
+                        </div>
+
+
+                    </div>
+
+
+
+
+
+
+
+                    <legend class="center-block"></legend>
+                    <div class="inline">
+                        <input type="submit" value="Submit" name="save" class="btn btn-info btn-lg" style="width:50%">&nbsp;
+
+                        <a class="btn btn-danger btn-lg" style="width:49%" id="view" href="/profile/{{ user.username }}">View as Public</a>
+                    </div>
+                </form>
+                <!-- /form-panel -->
+
+            </div>
+            <!-- /row -->
+        </div>
+        <!-- /col-lg-9 END SECTION MIDDLE -->
+    </div>
+
+</div>
+
+
+
+{% endblock %} {% block jsadd %}
+<!-- <script type="text/javascript">
+$(document).ready(function() {
+    $("#target :input").prop("disabled", true);
+    $("#edit").prop("disabled", false);
+    $("#image").hide();
+    $('#edit').click(function() {
+
+        $(this).prop('value', 'Save');
+        $(this).prop('type', 'Submit');
+        $("#target :input").prop("disabled", false);
+        $("#image" ).toggle();
+    });
+});
+</script> -->
+<script type="text/javascript">
+datesem("{{user.student_profile.DOB}}", "{{user.student_profile.Branch}}", "{{user.student_profile.Semester}}");
+</script>
+{% endblock jsadd %}

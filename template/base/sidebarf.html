@@ -1,0 +1,92 @@
+{% extends 'base/header.html' %} {% load staticfiles %} {% block sidebar %} {% load partial_views %}
+
+<aside>
+    <div id="sidebar" class="nav-collapse ">
+        <!-- sidebar menu start-->
+        <ul class="sidebar-menu" id="nav-accordion">
+
+            <p class="centered">
+
+                <a href="{% url 'dashboard' %}">
+                    {% if not user.faculty_profile.image %}
+                        <img src="/static/uploaded_image/fpp/user_blue.png" class="img-circle" width="60"/>
+                    {% else %}
+                        <img src="/static/uploaded_image/fpp/{{ user.faculty_profile.image }}" class="img-circle" width="60">
+                    {% endif %}
+                </a>
+            </p>
+            <h5 class="centered text-capitalize">Faculty,
+
+
+            {% if not user.first_name %}
+               User
+            {% else %}
+             {{ user.first_name }}
+            {% endif %}
+
+             </h5>
+
+            <li class="mt">
+                <a class="active" href="{% url 'dashboard' %}">
+                    <i class="fa fa-home"></i>
+                    <span>Dashboard</span>
+                </a>
+            </li>
+
+            <li class="sub-menu">
+                <a href="javascript:;">
+                    <i class="fa fa-bank"></i>
+                    <span>Courses</span>
+                </a>
+                <ul class="sub">
+                    {% course_list_function %}
+
+                </ul>
+            </li>
+
+
+            <li class="sub-menu">
+                <a href="javascript:;">
+                    <i class="fa fa-edit"></i>
+                    <span>Attendance</span>
+                </a>
+                <ul class="sub">
+
+                    <li><a href="{% url 'show_students' %}">Take</a>
+
+                    </li>
+                    <li><a href="{% url 'show' %}">See</a>
+                    </li>
+
+                </ul>
+            </li>
+            <li class="sub-menu">
+                <a href="{% url 'faculty' %}">
+                    <i class="fa fa-user"></i>
+                    <span>Faculty</span>
+                </a>
+            </li>
+
+            <li class="sub-menu">
+                <a href="javascript:;">
+                    <i class="fa fa-cogs"></i>
+                    <span>SETTINGS</span>
+                </a>
+                <ul class="sub">
+                    <li><a href="/profile/{{user.username}}">View Profile</a>
+                    </li>
+                    <li><a href="/profile">Edit Profile</a>
+                    </li>
+                    <li><a href="#" data-toggle="modal" data-target="#myModal">Change Password</a>
+                    </li>
+                </ul>
+            </li>
+
+        </ul>
+    </div>
+</aside>
+
+
+
+{% endblock sidebar %} 
+
